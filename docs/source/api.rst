@@ -27,7 +27,7 @@ Source documentation
    :show-inheritance:
 
 :mod:`mrbob.bobexceptions` -- Exceptions
-----------------------------------------
+-----------------------------------------
 
 .. automodule:: mrbob.bobexceptions
    :members:

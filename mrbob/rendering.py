@@ -71,19 +71,22 @@ def render_structure(fs_source_root, fs_target_root, variables, verbose,
         for local_file in local_files:
             if matches_any(local_file, ignored_files):
                 continue
-            render_template(
-                path.join(fs_source_dir, local_file),
-                render_filename(fs_target_dir, variables),
-                variables,
-                verbose,
-                renderer,
-            )
+            filename = render_filename(fs_target_dir, variables)
+            if filename is not None:
+                render_template(
+                    path.join(fs_source_dir, local_file),
+                    filename,
+                    variables,
+                    verbose,
+                    renderer,
+                )
         for local_directory in local_directories:
             abs_dir = render_filename(path.join(fs_target_dir, local_directory), variables)
-            if not path.exists(abs_dir):
-                if verbose:
-                    print(six.u("mkdir %s") % abs_dir)
-                os.mkdir(abs_dir)
+            if abs_dir is not None:
+                if not path.exists(abs_dir):
+                    if verbose:
+                        print(six.u("mkdir %s") % abs_dir)
+                    os.mkdir(abs_dir)
 
 
 def render_template(fs_source, fs_target_dir, variables, verbose, renderer):

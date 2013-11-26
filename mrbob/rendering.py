@@ -8,6 +8,7 @@ import six
 import stat
 
 from jinja2 import Environment, StrictUndefined
+from plugins import load_plugin
 
 
 jinja2_env = Environment(
@@ -114,7 +115,16 @@ def render_template(fs_source, fs_target_dir, variables, verbose, renderer):
     return path.join(fs_target_dir, filename)
 
 
-def render_filename(filename, variables):
+def render_filename(filename, variables, plugin=load_plugin('render_filename')):
+    if plugin is not None:
+        if getattr(plugin, 'get_filename', None) is None:
+            raise AttributeError('get_filename method not found in plugin')
+        else:
+            plug_inst = plugin(filename, variables)
+            filename, will_continue = plug_inst.get_filename()
+            if filename is None or not will_continue:
+                return filename
+
     variables_regex = re.compile(r"\+[^+%s]+\+" % re.escape(os.sep))
 
     replaceables = variables_regex.findall(filename)

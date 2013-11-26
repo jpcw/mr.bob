@@ -316,9 +316,9 @@ class render_templateTest(unittest.TestCase):
 
 class render_filenameTest(unittest.TestCase):
 
-    def call_FUT(self, filename, variables):
+    def call_FUT(self, filename, variables, plugin=None):
         from ..rendering import render_filename
-        return render_filename(filename, variables)
+        return render_filename(filename, variables, plugin)
 
     def test_filename_substitution(self):
         t = self.call_FUT('em0_+ip_addr+.conf', dict(ip_addr='127.0.0.1'))
@@ -356,6 +356,32 @@ class render_filenameTest(unittest.TestCase):
 
     def test_missing_key(self):
         self.assertRaises(KeyError, self.call_FUT, 'foo+bar+blub', dict())
+
+    def test_plugin_rdr_filename_is_bad(self):
+        from test_plugins import bad_mock_ep
+        import mrbob.plugins
+        ep = mrbob.plugins.load_plugin('render_filename',
+                                        bad_mock_ep)
+        self.assertRaises(AttributeError, self.call_FUT, '+/bla/+/+bar+',
+                          dict(bar='em0'), ep)
+
+    def test_plugin_rdr_filename_will_continue(self):
+        from test_plugins import will_continue_mock_ep
+        import mrbob.plugins
+        ep = mrbob.plugins.load_plugin('render_filename',
+                                        will_continue_mock_ep)
+        t = self.call_FUT('+/bla/+/+bar+',
+                          dict(bar='em0'), ep)
+        self.assertEqual(t, 'fake_foo_+/bla/+/em0')
+
+    def test_plugin_rdr_filename_will_not_continue(self):
+        from test_plugins import unordered_pkg_mock_entries
+        import mrbob.plugins
+        ep = mrbob.plugins.load_plugin('render_filename',
+                                        unordered_pkg_mock_entries)
+        t = self.call_FUT('+/bla/+/+bar+',
+                          dict(bar='em0'), ep)
+        self.assertEqual(t, '+/bla/+/+bar+_fake_bar')
 
 
 class parse_variablesTest(unittest.TestCase):

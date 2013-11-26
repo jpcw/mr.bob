@@ -8,7 +8,7 @@ import six
 import stat
 
 from jinja2 import Environment, StrictUndefined
-from plugins import load_plugin
+from .plugins import load_plugin
 
 
 jinja2_env = Environment(

@@ -358,7 +358,7 @@ class render_filenameTest(unittest.TestCase):
         self.assertRaises(KeyError, self.call_FUT, 'foo+bar+blub', dict())
 
     def test_plugin_rdr_filename_is_bad(self):
-        from test_plugins import bad_mock_ep
+        from .test_plugins import bad_mock_ep
         import mrbob.plugins
         ep = mrbob.plugins.load_plugin('render_filename',
                                         bad_mock_ep)
@@ -366,7 +366,7 @@ class render_filenameTest(unittest.TestCase):
                           dict(bar='em0'), ep)
 
     def test_plugin_rdr_filename_will_continue(self):
-        from test_plugins import will_continue_mock_ep
+        from .test_plugins import will_continue_mock_ep
         import mrbob.plugins
         ep = mrbob.plugins.load_plugin('render_filename',
                                         will_continue_mock_ep)
@@ -375,7 +375,7 @@ class render_filenameTest(unittest.TestCase):
         self.assertEqual(t, 'fake_foo_+/bla/+/em0')
 
     def test_plugin_rdr_filename_will_not_continue(self):
-        from test_plugins import unordered_pkg_mock_entries
+        from .test_plugins import unordered_pkg_mock_entries
         import mrbob.plugins
         ep = mrbob.plugins.load_plugin('render_filename',
                                         unordered_pkg_mock_entries)

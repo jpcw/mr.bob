@@ -91,24 +91,25 @@ def render_structure(fs_source_root, fs_target_root, variables, verbose,
 
 
 def render_template(fs_source, fs_target_dir, variables, verbose, renderer):
-    filename = path.split(fs_source)[1]
+    filename = render_filename(path.split(fs_source)[1], variables)
+    if filename is None:
+        return
     if filename.endswith('.bob'):
         filename = filename.split('.bob')[0]
-        fs_target_path = path.join(fs_target_dir, render_filename(filename, variables))
+        fs_target_path = path.join(fs_target_dir, filename)
         if verbose:
             print(six.u("Rendering %s to %s") % (fs_source, fs_target_path))
         fs_source_mode = stat.S_IMODE(os.stat(fs_source).st_mode)
         with codecs.open(fs_source, 'r', 'utf-8') as f:
             source_output = f.read()
             output = renderer(source_output, variables)
-            # append newline due to jinja2 bug, see https://github.com/iElectric/mr.bob/issues/30
             if source_output.endswith('\n') and not output.endswith('\n'):
                 output += '\n'
         with codecs.open(fs_target_path, 'w', 'utf-8') as fs_target:
             fs_target.write(output)
         os.chmod(fs_target_path, fs_source_mode)
     else:
-        fs_target_path = path.join(fs_target_dir, render_filename(filename, variables))
+        fs_target_path = path.join(fs_target_dir, filename)
         if verbose:
             print(six.u("Copying %s to %s") % (fs_source, fs_target_path))
         copy2(fs_source, fs_target_path)
@@ -116,6 +117,20 @@ def render_template(fs_source, fs_target_dir, variables, verbose, renderer):
 
 
 def render_filename(filename, variables, plugin=load_plugin('render_filename')):
+    """Overridable (via entry_points) rendering.
+
+    Now plugguable, you could write your plugin to modify yours replacements or others variables substitutions.
+
+    Your plugin must provide a get_filename method wich returns a tuple (filename|None, True|False)
+
+    tuple[0] None or tuple[1] False will immediatly return None, or filename.
+
+    If tuple[0] is not None and tuple[1] is True classic mrbob.rendering will continue over your filename return.
+
+    This is a useful option to generate templates or conditionnal rendering.
+
+    """
+
     if plugin is not None:
         if getattr(plugin, 'get_filename', None) is None:
             raise AttributeError('get_filename method not found in plugin')

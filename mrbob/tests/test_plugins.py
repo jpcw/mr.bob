@@ -37,6 +37,7 @@ class load_pluginsTest(unittest.TestCase):
     def test_error_load_plugin_bad_target(self):
         import mrbob.plugins
         self.assertRaises(AttributeError, mrbob.plugins.load_plugin,
-                          unordered_pkg_mock_entries, target=19)
+                          'render_filename', unordered_pkg_mock_entries,
+                          target=19)
 
 # vim:set et sts=4 ts=4 tw=80:

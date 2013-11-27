@@ -92,28 +92,27 @@ def render_structure(fs_source_root, fs_target_root, variables, verbose,
 
 def render_template(fs_source, fs_target_dir, variables, verbose, renderer):
     filename = render_filename(path.split(fs_source)[1], variables)
-    if filename is None:
-        return
-    if filename.endswith('.bob'):
-        filename = filename.split('.bob')[0]
-        fs_target_path = path.join(fs_target_dir, filename)
-        if verbose:
-            print(six.u("Rendering %s to %s") % (fs_source, fs_target_path))
-        fs_source_mode = stat.S_IMODE(os.stat(fs_source).st_mode)
-        with codecs.open(fs_source, 'r', 'utf-8') as f:
-            source_output = f.read()
-            output = renderer(source_output, variables)
-            if source_output.endswith('\n') and not output.endswith('\n'):
-                output += '\n'
-        with codecs.open(fs_target_path, 'w', 'utf-8') as fs_target:
-            fs_target.write(output)
-        os.chmod(fs_target_path, fs_source_mode)
-    else:
-        fs_target_path = path.join(fs_target_dir, filename)
-        if verbose:
-            print(six.u("Copying %s to %s") % (fs_source, fs_target_path))
-        copy2(fs_source, fs_target_path)
-    return path.join(fs_target_dir, filename)
+    if filename is not None:
+        if filename.endswith('.bob'):
+            filename = filename.split('.bob')[0]
+            fs_target_path = path.join(fs_target_dir, filename)
+            if verbose:
+                print(six.u("Rendering %s to %s") % (fs_source, fs_target_path))
+            fs_source_mode = stat.S_IMODE(os.stat(fs_source).st_mode)
+            with codecs.open(fs_source, 'r', 'utf-8') as f:
+                source_output = f.read()
+                output = renderer(source_output, variables)
+                if source_output.endswith('\n') and not output.endswith('\n'):
+                    output += '\n'
+            with codecs.open(fs_target_path, 'w', 'utf-8') as fs_target:
+                fs_target.write(output)
+            os.chmod(fs_target_path, fs_source_mode)
+        else:
+            fs_target_path = path.join(fs_target_dir, filename)
+            if verbose:
+                print(six.u("Copying %s to %s") % (fs_source, fs_target_path))
+            copy2(fs_source, fs_target_path)
+        return path.join(fs_target_dir, filename)
 
 
 def render_filename(filename, variables, plugin=load_plugin('render_filename')):

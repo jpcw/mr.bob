@@ -115,9 +115,6 @@ def render_template(fs_source, fs_target_dir, variables, verbose, renderer):
         return path.join(fs_target_dir, filename)
 
 
-#plugin = plugin=plugins.PLUGINS.get('render_filename')
-#def render_filename(filename, variables, plugin=plugin):
-
 def render_filename(filename, variables):
     """Overridable (via entry_points) rendering.
 

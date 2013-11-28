@@ -114,8 +114,9 @@ class Configurator(object):
     - :attr:`template_dir` is root directory of the template
     - :attr:`is_tempdir` if template directory is temporary (when using zipfile)
     - :attr:`templateconfig` dictionary parsed from `template` section
-    - :attr:`questions` ordered list of `Question instances to be asked
-    - :attr:`bobconfig` dictionary parsed from `mrbob` section of the config
+    - :attr:`questions` ordered list of `Question` instances to be asked
+    - :attr:`bobconfig` dictionary parsed from `mrbobx` section of the config
+
 
     """
 
@@ -244,7 +245,7 @@ class Question(object):
     :param help: Optional help message
     :param pre_ask_question: Space limited functions in dotted notation to ask before the question is asked
     :param post_ask_question: Space limited functions in dotted notation to ask aster the question is asked
-    :param **extra: Any extra parameters stored for possible extending of `Question` functionality
+    :param \**extra: Any extra parameters stored for possible extending of `Question` functionality
 
     Any of above parameters can be accessed as an attribute of `Question` instance.
 

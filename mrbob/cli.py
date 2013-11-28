@@ -64,11 +64,11 @@ parser.add_argument('-q', '--quiet',
                   #dest='overwrite',
                   #action='store_true',
                   #help='Always overwrite')
-parser.add_argument("--rdr-fname-plugin-target",
+parser.add_argument('-r', '--rdr-fname-plugin-target',
                     type=int,
                     default=None,
-                    dest="rdr_fname_plugin_target",
-                    help="Specify target plugin")
+                    dest='rdr_fname_plugin_target',
+                    help='Specify target plugin like 10|20')
 
 
 def main(args=sys.argv[1:]):

@@ -2,11 +2,11 @@
 
 """Plugins loader.
 
-    You could register your ownn plug_in with an entry_points.
+    You can register your own plugins with entry_points.
 
     Code a class in your egg and register it within your setup.py file
 
-    code_block ::
+    .. code-block:: python
 
         entry_points='''
         # -*- Entry points: -*-
@@ -14,10 +14,20 @@
         render_filename=your_naemspace.pkg.module:FooRenderFilename
         ''',
 
-   If there are multiples plugins with same name, you coul push yours with an order attribute.
-   Max is prefered, otherwise alphabetic sorting on namesapce returns the last entry.
+   If there are multiples plugins with same name, you could push yours with
+   different **order** attributes.
 
-    ..note:: Please notice that just mrbob.rendering.render_filename is iactually plugguable, but infra is here.
+   If you don't specify an order target `-r, --rdr-fname-plugin-target` the
+   plugin with max **order** attribute is prefered,
+   otherwise alphabetic sort on namespace returns the last entry.
+
+   If you specify a bad plugin target an error is raised ::
+
+    AttributeError: No plugin target 15 ! Registered are [10, 20]
+
+
+   .. note:: Please notice that just mrbob.rendering.render_filename is
+    actually plugguable, but code infra is here.
 
 """
 
@@ -45,7 +55,7 @@ def load_plugin(plugin, entries=entries, target=None):
             if targets:
                 return targets[-1][0].load(False)
             else:
-                registered = [ep[1].split('-')[0] for ep in ordered_plugins]
+                registered = [int(ep[1].split('-')[0]) for ep in ordered_plugins]
                 raise AttributeError('No plugin target %d ! Registered are %s' % (target,
                                                                                   registered))
 

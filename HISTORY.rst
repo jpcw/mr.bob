@@ -5,7 +5,7 @@ Changelog
 0.1a10 (unreleased)
 -------------------
 
-- add entry_points support for render_filename
+- add entry_points plugins support for render_filename
   [Jean-Philippe Camguilhem]
 
 - move exceptions to bobexceptions

@@ -8,7 +8,7 @@ import six
 import stat
 
 from jinja2 import Environment, StrictUndefined
-import plugins
+import mrbob.plugins as plugins
 
 jinja2_env = Environment(
     block_start_string="{{%",

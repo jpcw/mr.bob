@@ -16,7 +16,7 @@ readline  # make pyflakes happy, readline makes interactive mode keep history
 import six
 from importlib import import_module
 
-from mrbob import plugins
+import mrbob.plugins as plugins
 from .rendering import render_structure
 from .parsing import (
     parse_config,

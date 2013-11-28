@@ -11,7 +11,7 @@
         entry_points='''
         # -*- Entry points: -*-
         [mr.bob.plugins]
-        render_filename=your_naemspace.pkg.module:FooRenderFilename
+        render_filename=bobplugins.pkg.module:FooRenderFilename
         ''',
 
    If there are multiples plugins with same name, you could push yours with

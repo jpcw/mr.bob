@@ -16,6 +16,7 @@ readline  # make pyflakes happy, readline makes interactive mode keep history
 import six
 from importlib import import_module
 
+import plugins
 from .rendering import render_structure
 from .parsing import (
     parse_config,
@@ -133,6 +134,7 @@ class Configurator(object):
         self.variables = variables
         self.defaults = defaults
         self.target_directory = os.path.realpath(target_directory)
+        self.plugins_options = {}
 
         # figure out template directory
         self.template_dir, self.is_tempdir = parse_template(template)
@@ -165,6 +167,10 @@ class Configurator(object):
         self.quiet = maybe_bool(self.bobconfig.get('quiet', False))
         self.remember_answers = maybe_bool(self.bobconfig.get('remember_answers', False))
         self.ignored_files = self.bobconfig.get('ignored_files', '').split()
+        self.plugins_options['render_filename'] = self.bobconfig.get('rdr_fname_plugin_target', None)
+
+        # load plugins
+        plugins.PLUGINS = dict((key, plugins.load_plugin(key, target=value)) for key, value in self.plugins_options.items())
 
         # parse template settings
         self.templateconfig = self.config['template']
@@ -185,7 +191,8 @@ class Configurator(object):
                          self.variables,
                          self.verbose,
                          self.renderer,
-                         self.ignored_files)
+                         self.ignored_files,
+                         )
         if self.remember_answers:
             write_config(os.path.join(self.target_directory, '.mrbob.ini'),
                          'variables',

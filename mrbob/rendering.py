@@ -8,8 +8,7 @@ import six
 import stat
 
 from jinja2 import Environment, StrictUndefined
-from .plugins import load_plugin
-
+import plugins
 
 jinja2_env = Environment(
     block_start_string="{{%",
@@ -64,6 +63,7 @@ def render_structure(fs_source_root, fs_target_root, variables, verbose,
     with values from the variables, i.e. a file named `+name+.py.bob` given a
     dictionary {'name': 'bar'} would be rendered as `bar.py`.
     """
+
     ignored_files.extend(DEFAULT_IGNORED)
     if not isinstance(fs_source_root, six.text_type):  # pragma: no cover
         fs_source_root = six.u(fs_source_root)
@@ -115,7 +115,10 @@ def render_template(fs_source, fs_target_dir, variables, verbose, renderer):
         return path.join(fs_target_dir, filename)
 
 
-def render_filename(filename, variables, plugin=load_plugin('render_filename')):
+#plugin = plugin=plugins.PLUGINS.get('render_filename')
+#def render_filename(filename, variables, plugin=plugin):
+
+def render_filename(filename, variables):
     """Overridable (via entry_points) rendering.
 
     Now plugguable, you could write your plugin to modify yours replacements or others variables substitutions.
@@ -130,6 +133,7 @@ def render_filename(filename, variables, plugin=load_plugin('render_filename')):
 
     """
 
+    plugin = plugins.PLUGINS.get('render_filename')
     if plugin is not None:
         if getattr(plugin, 'get_filename', None) is None:
             raise AttributeError('get_filename method not found in plugin')

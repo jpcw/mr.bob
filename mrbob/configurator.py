@@ -165,6 +165,7 @@ class Configurator(object):
         self.quiet = maybe_bool(self.bobconfig.get('quiet', False))
         self.remember_answers = maybe_bool(self.bobconfig.get('remember_answers', False))
         self.ignored_files = self.bobconfig.get('ignored_files', '').split()
+        self.ignored_directories = self.bobconfig.get('ignored_directories', '').split()
 
         # parse template settings
         self.templateconfig = self.config['template']
@@ -185,7 +186,8 @@ class Configurator(object):
                          self.variables,
                          self.verbose,
                          self.renderer,
-                         self.ignored_files)
+                         self.ignored_files,
+                         self.ignored_directories)
         if self.remember_answers:
             write_config(os.path.join(self.target_directory, '.mrbob.ini'),
                          'variables',
@@ -338,5 +340,6 @@ class Question(object):
             print('\nExiting...')
             sys.exit(0)
 
-        print('')
+        if not non_interactive:
+            print('')
         return correct_answer

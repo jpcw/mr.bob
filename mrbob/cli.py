@@ -56,14 +56,6 @@ parser.add_argument('-q', '--quiet',
                     action="store_true",
                     default=False,
                     help='Suppress all but necessary output')
-#parser.add_argument('--dry-run',
-                  #dest='simulate',
-                  #action='store_true',
-                  #help='Simulate but do no work')
-#parser.add_argument('--overwrite',
-                  #dest='overwrite',
-                  #action='store_true',
-                  #help='Always overwrite')
 
 
 def main(args=sys.argv[1:]):
@@ -122,7 +114,9 @@ def main(args=sys.argv[1:]):
 
     c = None
     if bobconfig['verbose']:
+        print('')
         print('Configuration provided:')
+        print('')
         print('[variables] from ~/.mrbob')
         for line in pretty_format_config(original_global_variables):
             print(line)
@@ -130,9 +124,9 @@ def main(args=sys.argv[1:]):
         for line in pretty_format_config(file_variables):
             print(line)
         # TODO: implement variables on cli
-        #print('[variables] from command line interface')
-        #for line in pretty_format_config(file_variables):
-        #    print(line)
+        # print('[variables] from command line interface')
+        # for line in pretty_format_config(file_variables):
+        #     print(line)
         print('[defaults] from ~/.mrbob')
         for line in pretty_format_config(original_global_defaults):
             print(line)
@@ -140,9 +134,9 @@ def main(args=sys.argv[1:]):
         for line in pretty_format_config(file_defaults):
             print(line)
         # TODO: implement defaults on cli
-        #print('[defaults] from command line interface')
-        #for line in pretty_format_config(file_defaults):
-        #    print(line)
+        # print('[defaults] from command line interface')
+        # for line in pretty_format_config(file_defaults):
+        #     print(line)
         print('[mr.bob] from ~/.mrbob')
         for line in pretty_format_config(original_global_bobconfig):
             print(line)
@@ -152,7 +146,6 @@ def main(args=sys.argv[1:]):
         print('[mr.bob] from command line interface')
         for line in pretty_format_config(cli_bobconfig):
             print(line)
-        print('\n')
 
     try:
         c = Configurator(template=options.template,
@@ -165,16 +158,24 @@ def main(args=sys.argv[1:]):
             return c.print_questions()
 
         if c.questions and not maybe_bool(bobconfig['quiet']):
-            print("Welcome to mr.bob interactive mode. Before we generate directory structure, some questions need to be answered.")
-            print("")
-            print("Answer with a question mark to display help.")
-            print("Values in square brackets at the end of the questions show the default value if there is no answer.")
-            print("\n")
+            if options.non_interactive:
+                print('')
+                print('Welcome to mr.bob non-interactive mode. Questions will be answered by default values or hooks.')
+                print('')
+            else:
+                print('')
+                print('Welcome to mr.bob interactive mode. Before we generate directory structure, some questions need to be answered.')
+                print('')
+                print('Answer with a question mark to display help.')
+                print('Values in square brackets at the end of the questions show the default value if there is no answer.')
+                print('\n')
             c.ask_questions()
-            print("")
+            if not options.non_interactive:
+                print('')
         c.render()
         if not maybe_bool(bobconfig['quiet']):
             print("Generated file structure at %s" % os.path.realpath(options.target_directory))
+            print('')
         return
     except TemplateConfigurationError as e:
         parser.error(six.u('TemplateConfigurationError: %s') % e.args[0])

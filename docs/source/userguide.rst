@@ -57,13 +57,13 @@ Or from a package::
 
     $ mrbob some.package:template_folder/
 
-Or from a zip file::
+Or from a downloaded zip file::
 
-    $ mrbob https://github.com/iElectric/mr.bob/zipball/master
+    $ mrbob https://example.com/templates/mytemplate.zip
 
 Or from a relative path in a zip file::
 
-    $ mrbob https://github.com/iElectric/mr.bob/zipball/master#mrbob/template_sample
+    $ mrbob https://github.com/iElectric/mr.bob/archive/master.zip#mr.bob-master/mrbob/template_sample
 
 
 Sample template to try out
@@ -202,16 +202,18 @@ don't do anything special besides providing readability.
 ``mr.bob`` section reference
 ****************************
 
-================  ===============================  =======================================================================
-  Parameter         Default                          Explanation
-================  ===============================  =======================================================================
-ignored_files     No patterns                      Multiple Unix-style patterns to specify which files should be ignored:
-                                                   for instance, to ignore, Vim swap files, specify ``*.swp``
-non_interactive   False                            Don't prompt for input. Fail if questions are required but not answered
-quiet             False                            Don't output anything except necessary
-remember_answers  False                            Write answers to ``.mrbob.ini`` file inside output directory
-verbose           False                            Output more information, useful for debugging
-================  ===============================  =======================================================================
+=====================  ===============================  =======================================================================
+  Parameter              Default                          Explanation
+=====================  ===============================  =======================================================================
+ignored_files          No patterns                      Multiple Unix-style patterns to specify which files should be ignored:
+                                                        for instance, to ignore Vim swap files, specify ``*.swp``
+ignored_directories    No patterns                      Multiple Unix-style patterns to specify which directories should be ignored:
+                                                        for instance, to ignore a Git directory, specify ``.git``
+non_interactive        False                            Don't prompt for input. Fail if questions are required but not answered
+quiet                  False                            Don't output anything except necessary
+remember_answers       False                            Write answers to ``.mrbob.ini`` file inside output directory
+verbose                False                            Output more information, useful for debugging
+=====================  ===============================  =======================================================================
 
 
 
@@ -248,4 +250,4 @@ For that, you could use template_starter wich will provide you an egg ``bobtempl
 - `bobtemplates.ielectric <https://github.com/iElectric/bobtemplates.ielectric>`_
 - `bobtemplates.kotti <https://github.com/Kotti/bobtemplates.kotti>`_
 - `bobtemplates.niteoweb <https://github.com/niteoweb/bobtemplates.niteoweb>`_
-- `bobtemplates.jpcw <https://github.com/jpcw/bobtemplates.jpcw>`_
+- `bobtemplates.plone <https://github.com/collective/bobtemplates.plone>`_

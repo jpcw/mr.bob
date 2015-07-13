@@ -1,15 +1,22 @@
 # -*- coding: utf-8 -*-
 
 import os
+import sys
+import codecs
 
 from setuptools import setup
 from setuptools import find_packages
 
 install_requires = [
     'setuptools',
-    'jinja2<2.7',  # 2.7 doesn't support python 3.2
     'six>=1.2.0',  # 1.1.0 release doesn't have six.moves.input
 ]
+
+if (3,) < sys.version_info < (3, 3):
+    # Jinja 2.7 drops Python 3.2 compat.
+    install_requires.append('Jinja2>=2.5.0,<2.7dev')
+else:
+    install_requires.append('Jinja2>=2.5.0')
 
 try:
     import importlib  # NOQA
@@ -28,13 +35,13 @@ except ImportError:
 
 
 def read(*rnames):
-    return open(os.path.join(os.path.dirname(__file__), *rnames)).read()
+    return codecs.open(os.path.join(os.path.dirname(__file__), *rnames), 'r', 'utf-8').read()
 
 
 setup(name='mr.bob',
-      version='0.1a10.dev0',
+      version='0.2.dev0',
       description='Bob renders directory structure templates',
-      long_description=read('README.rst') + "\n" + read('HISTORY.rst'),
+      long_description=read('README.rst') + '\n' + read('HISTORY.rst'),
       classifiers=[
           "Programming Language :: Python",
           "Programming Language :: Python :: Implementation :: CPython",
@@ -44,6 +51,7 @@ setup(name='mr.bob',
           "Programming Language :: Python :: 3",
           "Programming Language :: Python :: 3.2",
           "Programming Language :: Python :: 3.3",
+          "Programming Language :: Python :: 3.4",
       ],
       author='Domen Kozar, Tom Lazar',
       author_email='',
@@ -55,7 +63,7 @@ setup(name='mr.bob',
           'test': [
               'nose',
               'coverage<3.6dev',
-              'flake8<2.0',
+              'flake8>2.0',
               'mock',
           ],
           'development': [

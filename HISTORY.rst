@@ -2,8 +2,27 @@ Changelog
 =========
 
 
-0.1a10 (unreleased)
--------------------
+0.2 (unreleased)
+----------------
+
+- Nothing changed yet.
+
+
+0.1.1 (2014-03-03)
+------------------
+
+- Claim Python 3.4 support
+  [Domen Kožar]
+
+- Fix encoding errors on Python 3 during installation
+  [Domen Kožar]
+
+- Use Jinja2 < 2.7 only for python 3.2
+  [Domen Kožar]
+
+
+0.1 (2014-03-02)
+----------------
 
 - Add optional rendering with +__if_rdr.me__+ statement 
   [Jean-Philippe Camguilhem jpcw]
@@ -15,6 +34,7 @@ Changelog
   [Jean-Philippe Camguilhem]
 
 - Use jinja2 < 2.7, since 2.7+ doesn't support Python 3.2
+  [Domen Kožar]
 
 - Filename variable name substitution regex failed to compile on windows
   [Domen Kožar]
@@ -25,6 +45,28 @@ Changelog
 - Configure patterns of files to ignore through
   ``ignored_files`` option of ``mr.bob`` section.
   [Godefroid Chapelle]
+
+- Configure patterns of directories to ignore through
+  ``ignored_directories`` option of ``mr.bob`` section.
+  [Fotis Gimian]
+
+- Added new post-question hook ``mrbob.hooks.to_integer``
+  [Fotis Gimian]
+
+- Added new post-question hook ``mrbob.hooks.to_decimal``
+  [Fotis Gimian]
+
+- Added new post-question hook ``mrbob.hooks.validate_choices``
+  [Fotis Gimian]
+
+- Added new post-question hook ``mrbob.hooks.validate_regex``
+  [Fotis Gimian]
+
+- Added new pre-question hook ``mrbob.hooks.set_current_datetime``
+  [Fotis Gimian]
+
+- Added new post-question hook ``mrbob.hooks.validate_datetime``
+  [Fotis Gimian]
 
 
 0.1a9 (2013-04-26)
